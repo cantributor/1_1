@@ -6,5 +6,6 @@ case class Book(
     id: Option[UUID],
     title: String,
     author: Author,
+    year: Int,
     pages: Int
 )

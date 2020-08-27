@@ -21,7 +21,13 @@ abstract class BookDaoTest(name: String, createDao: () => BookDao)
     id    <- Gen.option(Gen.uuid)
     title <- arbitrary[String]
     pages <- arbitrary[Int]
-  } yield Book(id = id, title = title, pages = pages, author = Author(None, "Fenimor Cooper"))
+  } yield Book(
+    id = id,
+    title = title,
+    pages = pages,
+    author = Author(None, "Fenimor Cooper"),
+    year = 1900
+  )
 
   implicit val arbitraryBook: Arbitrary[Book] = Arbitrary(genBook)
 

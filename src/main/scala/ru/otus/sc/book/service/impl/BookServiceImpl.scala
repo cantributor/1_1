@@ -14,7 +14,7 @@ class BookServiceImpl(bookDao: BookDao, authorDao: AuthorDao) extends BookServic
     val author =
       if (authors.isEmpty) authorDao.createAuthor(Author(None, request.authorName))
       else authors.head
-    CreateBookResponse(bookDao.createBook(Book(None, request.title, author, request.pages)))
+    CreateBookResponse(bookDao.createBook(Book(None, request.title, author, 1833, request.pages)))
   }
 
   def getBook(request: GetBookRequest): GetBookResponse =
@@ -43,6 +43,15 @@ class BookServiceImpl(bookDao: BookDao, authorDao: AuthorDao) extends BookServic
     request match {
       case FindBooksRequest.ByTitle(title) =>
         FindBooksResponse.Result(bookDao.findByTitle(title))
+      case FindBooksRequest.ByAuthorName(name) =>
+        FindBooksResponse.Result(bookDao.findByAuthorName(name))
+      case FindBooksRequest.ByYear(year) =>
+        FindBooksResponse.Result(bookDao.findByYear(year))
+      case FindBooksRequest.ByMinPagesAndMaxPagesOfAuthor(minPagesOfBook, maxPagesOfAuthor) =>
+        val books = bookDao.findByPages(minPagesOfBook, upperLimit = false)
+        val authors =
+          bookDao.findByPages(maxPagesOfAuthor, upperLimit = true).map(book => book.author).toSet
+        FindBooksResponse.Result(books.filter(book => authors.contains(book.author)))
     }
 
   def deleteAll(): DeleteAllBooksResponse = DeleteAllBooksResponse(bookDao.deleteAll())

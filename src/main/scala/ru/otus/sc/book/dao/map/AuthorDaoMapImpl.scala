@@ -38,4 +38,10 @@ class AuthorDaoMapImpl extends AuthorDao {
     authors.values.filter(_.name == name).toVector
 
   def findAll(): Seq[Author] = authors.values.toVector
+
+  def deleteAll(): Int = {
+    val size = authors.size
+    authors = Map.empty
+    size
+  }
 }

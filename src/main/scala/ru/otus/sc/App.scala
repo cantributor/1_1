@@ -9,18 +9,7 @@ import ru.otus.sc.greet.model.{GreetRequest, GreetResponse}
 import ru.otus.sc.greet.service.GreetingService
 import ru.otus.sc.greet.service.impl.GreetingServiceImpl
 import ru.otus.sc.user.dao.map.UserDaoMapImpl
-import ru.otus.sc.user.model.{
-  CreateUserRequest,
-  CreateUserResponse,
-  DeleteUserRequest,
-  DeleteUserResponse,
-  FindUsersRequest,
-  FindUsersResponse,
-  GetUserRequest,
-  GetUserResponse,
-  UpdateUserRequest,
-  UpdateUserResponse
-}
+import ru.otus.sc.user.model._
 import ru.otus.sc.user.service.UserService
 import ru.otus.sc.user.service.impl.UserServiceImpl
 

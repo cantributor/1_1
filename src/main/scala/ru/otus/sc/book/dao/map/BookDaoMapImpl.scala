@@ -44,4 +44,16 @@ class BookDaoMapImpl extends BookDao {
     books = Map.empty
     size
   }
+
+  def findByAuthorName(name: String): Seq[Book] =
+    books.values.filter(_.author.name == name).toList
+
+  def findByYear(year: Int): Seq[Book] =
+    books.values.filter(_.year == year).toList
+
+  def findByPages(pages: Int, upperLimit: Boolean): Seq[Book] = {
+    def predicate =
+      if (upperLimit) (book: Book) => book.pages <= pages else (book: Book) => book.pages >= pages
+    books.values.filter(predicate).toList
+  }
 }
