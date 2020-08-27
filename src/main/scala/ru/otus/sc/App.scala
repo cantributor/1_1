@@ -26,12 +26,12 @@ import ru.otus.sc.user.service.impl.UserServiceImpl
 
 trait App {
 
-  /**
-    * Greet requested person
-    * @param request - greet request
-    * @return the greeting response
-    */
   def greet(request: GreetRequest): GreetResponse
+  def count: Int
+  def echo(request: GreetRequest): GreetRequest
+  def getValue(key: Int): Option[String]
+  def setValue(key: Int, value: String): Boolean
+  def getLazyVal: String
 
   def createUser(request: CreateUserRequest): CreateUserResponse
   def getUser(request: GetUserRequest): GetUserResponse
@@ -39,53 +39,25 @@ trait App {
   def deleteUser(request: DeleteUserRequest): DeleteUserResponse
   def findUsers(request: FindUsersRequest): FindUsersResponse
 
-  /**
-    * Call counter
-    * @return number of calls
-    */
-  def count: Int
-
-  /**
-    * Echo of request
-    * @param request - some request
-    * @return request
-    */
-  def echo(request: GreetRequest): GreetRequest
-
-  /**
-    * Return value depending on key (1, 2 or 3 only)
-    * @param key - one of (1, 2, 3)
-    * @return Some(value) if key in (1, 2, 3) None otherwise
-    */
-  def getValue(key: Int): Option[String]
-
-  /**
-    * Set value for key
-    * @param key - one of (1, 2, 3)
-    * @param value - value for key
-    * @return true if value set false if key does not exist
-    */
-  def setValue(key: Int, value: String): Boolean
-
-  /**
-    * Get lazy evaluated value
-    * @return some value
-    */
-  def getLazyVal: String
+  def createBook(request: CreateBookRequest): CreateBookResponse
+  def getBook(request: GetBookRequest): GetBookResponse
+  def updateBook(request: UpdateBookRequest): UpdateBookResponse
+  def deleteBook(request: DeleteBookRequest): DeleteBookResponse
+  def findBooks(request: FindBooksRequest): FindBooksResponse
 }
 
 object App {
   private class AppImpl(
-      greeting: GreetingService,
+      greetingService: GreetingService,
       userService: UserService,
       bookService: BookService
   ) extends App {
-    def greet(request: GreetRequest): GreetResponse = greeting.greet(request)
-    def count: Int                                  = greeting.count
+    def greet(request: GreetRequest): GreetResponse = greetingService.greet(request)
+    def count: Int                                  = greetingService.count
     def echo(request: GreetRequest): GreetRequest   = request
-    def getValue(key: Int): Option[String]          = greeting.getValue(key)
-    def setValue(key: Int, value: String): Boolean  = greeting.setValue(key, value)
-    def getLazyVal: String                          = greeting.getLazyVal
+    def getValue(key: Int): Option[String]          = greetingService.getValue(key)
+    def setValue(key: Int, value: String): Boolean  = greetingService.setValue(key, value)
+    def getLazyVal: String                          = greetingService.getLazyVal
 
     def createUser(request: CreateUserRequest): CreateUserResponse = userService.createUser(request)
     def getUser(request: GetUserRequest): GetUserResponse          = userService.getUser(request)
@@ -101,7 +73,7 @@ object App {
   }
 
   def apply(): App = {
-    val greetingDao     = new GreetingDaoImpl("value1", "value2", "value3")
+    val greetingDao     = new GreetingDaoImpl
     val greetingService = new GreetingServiceImpl(greetingDao)
 
     val userService = new UserServiceImpl(new UserDaoMapImpl)
