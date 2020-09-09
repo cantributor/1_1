@@ -5,8 +5,10 @@ import java.util.UUID
 import ru.otus.sc.book.dao.BookDao
 import ru.otus.sc.book.model.Book
 
+import scala.collection.mutable
+
 class BookDaoMapImpl extends BookDao {
-  private var books: Map[UUID, Book] = Map.empty
+  private val books: mutable.Map[UUID, Book] = mutable.Map.empty
 
   def createBook(book: Book): Book = {
     val id         = UUID.randomUUID()
@@ -41,7 +43,7 @@ class BookDaoMapImpl extends BookDao {
 
   def deleteAll(): Int = {
     val size = books.size
-    books = Map.empty
+    books.clear
     size
   }
 
